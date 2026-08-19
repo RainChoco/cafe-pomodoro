@@ -1,8 +1,10 @@
 {
   "name": "cafe-pomodoro",
   "displayName": "cafe-pomodoro",
+  "publisher": "rainmeowmeow",
   "description": "A cozy cafe-themed Pomodoro timer for VS Code.",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "icon": "images/Cafe-Pomodoro.png",
   "engines": {
     "vscode": "^1.125.0"
   },

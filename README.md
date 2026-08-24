@@ -9,6 +9,7 @@ A cozy cafe-themed Pomodoro timer extension for Visual Studio Code designed to h
 * **Smart Session Cycling:** Automatically alternates between structured 50-minute focus blocks and 10-minute mindful coffee breaks.
 * **Persistent Break Reminders:** Displays a modal pop-up when break time arrives that requires your explicit acknowledgment before returning to work, ensuring you actually step away and stretch.
 * **Live Status Bar Integration:** Real-time countdown clock and session status displayed right in your VS Code status bar.
+* **Daily Study Statistics:** Automatically tracks and accumulates your completed focus hours, allowing you to check your productivity dashboard anytime.
 
 ## Requirements
 
@@ -25,6 +26,7 @@ A cozy cafe-themed Pomodoro timer extension for Visual Studio Code designed to h
 1. Open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`) and type **Start Cafe Pomodoro**, OR click the **☕ Cafe Pomodoro (Click to Start)** status bar item in the bottom right corner of your window.
 2. Type your target study hours (e.g., `2`), and hit Enter.
 3. Enjoy your focused coding session with background classical music, and follow the interactive break prompts when your session finishes!
+4. **To view your stats:** Open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`), type **Cafe Pomodoro: View Daily Stats**, and press Enter to see your total focus progress.
 
 ## Enjoy! 🌿
 

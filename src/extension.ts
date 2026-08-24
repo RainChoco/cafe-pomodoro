@@ -15,7 +15,8 @@ export function activate(context: vscode.ExtensionContext) {
     statusBarItem.text = '☕ Cafe Pomodoro (Click to Start)';
     statusBarItem.show();
 
-    let disposable = vscode.commands.registerCommand('cafe-pomodoro.startTimer', async () => {
+    // 1. Command to start the timer & goal
+    let startDisposable = vscode.commands.registerCommand('cafe-pomodoro.startTimer', async () => {
         const input = await vscode.window.showInputBox({
             prompt: 'How many total hours would you like to study?',
             placeHolder: 'e.g., 1, 2, 3 (Max 5)'
@@ -33,7 +34,19 @@ export function activate(context: vscode.ExtensionContext) {
         startSmartSession(totalMins, context);
     });
 
-    context.subscriptions.push(disposable);
+    // 2. Command to view daily stats dashboard notification
+    let statsDisposable = vscode.commands.registerCommand('cafe-pomodoro.viewStats', () => {
+        // Retrieve stored total focused minutes (default to 0 if none)
+        const totalMinutesFocused: number = context.globalState.get('totalMinutesFocused', 0);
+        const totalHours = (totalMinutesFocused / 60).toFixed(1);
+
+        vscode.window.showInformationMessage(
+            `📊 Cafe Pomodoro Dashboard:\n• Total Focus Time: ${totalMinutesFocused} minutes (~${totalHours} hours)`,
+            { modal: true }
+        );
+    });
+
+    context.subscriptions.push(startDisposable, statsDisposable);
 }
 
 function startSmartSession(totalMinutes: number, context: vscode.ExtensionContext) {
@@ -41,25 +54,27 @@ function startSmartSession(totalMinutes: number, context: vscode.ExtensionContex
 
     let remainingTotalMinutes = totalMinutes;
     const focusDuration = 50; 
-    const breakDuration = 10;  
-
     let isBreak = false;
     let currentSessionSeconds = focusDuration * 60;
 
     vscode.window.showInformationMessage(`☕ Study session started for ${totalMinutes / 60} hour(s)! Enjoy your classical music.`);
-
-    // Play classical music when focus starts
     playClassicalMusic(context);
 
-    // Track how many seconds have passed to loop the music if it's a 2+ hour session
     let musicTimerSeconds = 0;
-    const songLengthSeconds = 121; // Since your classical.mp3 is 2 minutes and 1 seconds (121 seconds)
+    const songLengthSeconds = 121; 
 
     timer = setInterval(async () => {
         if (remainingTotalMinutes <= 0) {
             if (timer) clearInterval(timer);
             statusBarItem.text = '☕ Study Session Complete!';
-            vscode.window.showInformationMessage('Amazing job! You finished your entire goal.');
+            
+            // --- STATS TRACKING UPDATE ---
+            // Add the completed minutes to globalState storage
+            const currentStored = context.globalState.get('totalMinutesFocused', 0) as number;
+            const updatedTotal = currentStored + totalMinutes;
+            await context.globalState.update('totalMinutesFocused', updatedTotal);
+
+            vscode.window.showInformationMessage(`Amazing job! You finished your goal and added ${totalMinutes} mins to your daily stats.`);
             return;
         }
 
@@ -85,9 +100,7 @@ function startSmartSession(totalMinutes: number, context: vscode.ExtensionContex
 
                 isBreak = false;
                 currentSessionSeconds = focusDuration * 60;
-                musicTimerSeconds = 0; // Reset music loop tracker
-                
-                // Play music again for the next focus block
+                musicTimerSeconds = 0; 
                 playClassicalMusic(context);
 
                 startSmartSession(remainingTotalMinutes, context);
@@ -103,24 +116,18 @@ function startSmartSession(totalMinutes: number, context: vscode.ExtensionContex
             currentSessionSeconds--;
             musicTimerSeconds++;
 
-            // If your song reaches the end (121 seconds), replay it automatically!
             if (musicTimerSeconds >= songLengthSeconds) {
                 playClassicalMusic(context);
-                musicTimerSeconds = 0; // Reset counter for the next loop
+                musicTimerSeconds = 0;
             }
 
             const minutes = Math.floor(currentSessionSeconds / 60);
             const seconds = currentSessionSeconds % 60;
-
-            const formattedMinutes = String(minutes).padStart(2, '0');
-            const formattedSeconds = String(seconds).padStart(2, '0');
-
-            statusBarItem.text = `☕ ${formattedMinutes}:${formattedSeconds} | Focus`;
+            statusBarItem.text = `☕ ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} | Focus`;
         }
     }, 1000);
 }
 
-// Helper function to play the music cleanly
 function playClassicalMusic(context: vscode.ExtensionContext) {
     try {
         const musicPath = path.join(context.extensionPath, 'classical.mp3');

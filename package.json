@@ -18,6 +18,10 @@
       {
         "command": "cafe-pomodoro.startTimer",
         "title": "Start Cafe Pomodoro"
+      },
+      {
+        "command": "cafe-pomodoro.viewStats",
+        "title": "Cafe Pomodoro: View Daily Stats"
       }
     ]
   },

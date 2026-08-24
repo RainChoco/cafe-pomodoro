@@ -14,7 +14,7 @@ A cozy cafe-themed Pomodoro timer extension for Visual Studio Code designed to h
 
 * Visual Studio Code version `1.125.0` or higher.
 
-## 🚀 Getting Started
+## Getting Started
 
 1. Download or install the **Cafe Pomodoro** extension package.
 2. Open Visual Studio Code.

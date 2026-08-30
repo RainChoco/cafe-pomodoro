@@ -1,12 +1,12 @@
 {
   "name": "cafe-pomodoro",
-  "displayName": "cafe-pomodoro",
+  "displayName": "Cafe Pomodoro",
   "publisher": "rainmeowmeow",
   "description": "A cozy cafe-themed Pomodoro timer for VS Code.",
   "version": "0.0.3",
   "icon": "images/Cafe-Pomodoro.png",
   "engines": {
-    "vscode": "^1.125.0"
+    "vscode": "^1.95.0"
   },
   "categories": [
     "Other"
@@ -17,11 +17,19 @@
     "commands": [
       {
         "command": "cafe-pomodoro.startTimer",
-        "title": "Start Cafe Pomodoro"
+        "title": "Cafe Pomodoro: Start Timer"
+      },
+      {
+        "command": "cafe-pomodoro.pauseTimer",
+        "title": "Cafe Pomodoro: Pause / Resume Timer"
+      },
+      {
+        "command": "cafe-pomodoro.stopTimer",
+        "title": "Cafe Pomodoro: Stop Session"
       },
       {
         "command": "cafe-pomodoro.viewStats",
-        "title": "Cafe Pomodoro: View Daily Stats"
+        "title": "Cafe Pomodoro: View Stats"
       }
     ]
   },
@@ -36,7 +44,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "24.x",
-    "@types/vscode": "^1.125.0",
+    "@types/vscode": "^1.95.0",
     "@vscode/test-cli": "^0.0.15",
     "@vscode/test-electron": "^3.0.0",
     "eslint": "^10.5.0",
@@ -46,8 +54,5 @@
   "overrides": {
     "diff": "^8.0.4",
     "serialize-javascript": "^7.0.6"
-  },
-  "dependencies": {
-    "sound-play": "^1.1.0"
   }
 }
